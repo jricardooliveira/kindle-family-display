@@ -1,0 +1,9 @@
+{
+  "id": "rss-portugal-42",
+  "title": "A synthetic local headline",
+  "summary": "A short fixture summary.",
+  "published_at": "2026-10-04T07:15:00+01:00",
+  "source": "news-fixture",
+  "category": "portugal",
+  "url": "https://example.invalid/story"
+}

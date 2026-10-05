@@ -1,0 +1,12 @@
+{
+  "layout": "weather_alert",
+  "item_ids": [
+    "cal-joao-42"
+  ],
+  "protected_alert_ids": [
+    "weather-heavy-rain-20261004"
+  ],
+  "reason": "Protected severe weather alert with next family commitment",
+  "generated_at": "2026-10-04T07:31:00+01:00",
+  "provider": "rules"
+}

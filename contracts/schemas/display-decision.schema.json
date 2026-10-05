@@ -1,0 +1,67 @@
+{
+  "$defs": {
+    "DisplayLayout": {
+      "enum": [
+        "hero",
+        "hero_secondary",
+        "three_items",
+        "weather_alert",
+        "news_qr",
+        "quote",
+        "nearby"
+      ],
+      "title": "DisplayLayout",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "layout": {
+      "$ref": "#/$defs/DisplayLayout"
+    },
+    "item_ids": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 3,
+      "title": "Item Ids",
+      "type": "array"
+    },
+    "protected_alert_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Protected Alert Ids",
+      "type": "array"
+    },
+    "reason": {
+      "maxLength": 240,
+      "title": "Reason",
+      "type": "string"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "provider": {
+      "default": "rules",
+      "enum": [
+        "rules",
+        "ai"
+      ],
+      "title": "Provider",
+      "type": "string"
+    }
+  },
+  "required": [
+    "layout",
+    "item_ids",
+    "protected_alert_ids",
+    "reason",
+    "generated_at"
+  ],
+  "title": "DisplayDecision",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

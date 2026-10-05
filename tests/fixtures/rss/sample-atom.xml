@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Feed Atom sintético</title>
+  <id>https://atom.example.net/feed</id>
+  <updated>2026-10-04T11:30:00Z</updated>
+  <entry>
+    <id>tag:atom.example.net,2026:story-1</id>
+    <title>Escolas preparam novas atividades</title>
+    <link href="https://atom.example.net/escolas" rel="alternate" />
+    <published>2026-10-04T10:45:00+01:00</published>
+    <summary>Resumo do artigo Atom.</summary>
+  </entry>
+</feed>

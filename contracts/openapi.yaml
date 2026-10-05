@@ -1,0 +1,89 @@
+openapi: 3.1.0
+info:
+  title: Kindle Family Dashboard API
+  version: 0.1.0
+  description: Live and demo data. Images are served from persistent cache; no upstream calls occur in image handlers.
+servers:
+  - url: http://127.0.0.1:8000
+paths:
+  /healthz:
+    get:
+      summary: Process liveness, independent of screen freshness
+      responses:
+        '200': {description: Process is alive}
+  /api/status:
+    get:
+      summary: Screen availability plus per-source freshness, counts and safe errors
+      responses:
+        '200':
+          description: Service status; inspect ok and screen_status
+          content:
+            application/json:
+              schema: {$ref: './schemas/status.schema.json'}
+  /api/preview/{screen}:
+    get:
+      summary: Same cached grayscale PNG as the Kindle route
+      parameters:
+        - $ref: '#/components/parameters/Screen'
+      responses:
+        '200': {$ref: '#/components/responses/CachedPNG'}
+        '422': {description: Unknown screen}
+        '503': {description: No cached image is available}
+  /api/display:
+    get:
+      summary: TRMNL-compatible pointer to the next screen (used by the KOReader TRMNL plugin)
+      responses:
+        '200':
+          description: Image location and refresh hint
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status, image_url, filename, refresh_rate]
+                properties:
+                  status: {type: integer}
+                  image_url: {type: string, format: uri}
+                  filename: {type: string}
+                  refresh_rate: {type: integer, description: Seconds until the next fetch}
+        '503': {description: No cached image is available}
+  /kindle/current.png:
+    get:
+      summary: Fixed alias for News/Weather (navigation is client-side)
+      responses:
+        '200': {$ref: '#/components/responses/CachedPNG'}
+        '503': {description: No cached image is available}
+  /kindle/{screen}.png:
+    get:
+      summary: Cached named screen
+      parameters:
+        - $ref: '#/components/parameters/Screen'
+      responses:
+        '200': {$ref: '#/components/responses/CachedPNG'}
+        '422': {description: Unknown screen}
+        '503': {description: No cached image is available}
+  /kindle/status.json:
+    get:
+      summary: Status and client navigation order (News/Weather, Family, Calendar)
+      responses:
+        '200':
+          description: Service status
+          content:
+            application/json:
+              schema: {$ref: './schemas/status.schema.json'}
+components:
+  parameters:
+    Screen:
+      in: path
+      name: screen
+      required: true
+      schema: {type: string, enum: [news-weather, news, family, calendar, nearby, photo]}
+  responses:
+    CachedPNG:
+      description: Last successful image; may be stale after a refresh failure
+      headers:
+        ETag:
+          schema: {type: string}
+          description: Identifies this cached image generation
+      content:
+        image/png:
+          schema: {type: string, format: binary}

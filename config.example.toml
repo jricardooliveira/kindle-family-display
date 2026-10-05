@@ -1,0 +1,65 @@
+# Copy to config.toml. Edit this file, then restart the app/container.
+# Private config.toml is ignored and mounted read-only; never share subscription URLs.
+app_env = "development"
+demo_mode = true
+ai_enabled = false
+# With ai_enabled = true, an OpenAI key file (bare key or NAME=key) lets a model score
+# news importance; Compose mounts ./secrets and reads secrets/ai_key.
+# ai_api_key_file = "openapi_key"
+# ai_model = "gpt-4o-mini"
+# ai_news_min_score = 6
+timezone = "Europe/Lisbon"
+screen_width = 800
+screen_height = 600
+screen_rotation = 0
+refresh_minutes = 30
+calendar_days = 14
+calendar_poll_minutes = 30
+weather_poll_minutes = 30
+rss_poll_minutes = 60
+# Periods (local time) in which the news changes on every refresh instead of staying fixed.
+# news_rotation_windows = ["07:30-08:30"]
+# Periods in which the news screen shows one lead story and three briefs instead of the weather.
+# news_digest_windows = ["12:30-13:30"]
+# At night the family screen shows only the next morning's first event; "" disables it.
+# night_window = "21:30-06:30"
+# A rotating curiosity fills the family screen when no events are due.
+# facts_enabled = true
+# Family photos (jpg/png) shown one per day in alternate hours when no events are due.
+# Compose mounts ./photos and sets this itself; set it only for local development.
+# photos_dir = "photos"
+
+# Local development paths; Compose overrides these with persistent volume paths.
+database_url = "sqlite:///.data/kindle.db"
+cache_dir = ".cache"
+
+# Both coordinates and a label enable Open-Meteo; use your own town coordinates.
+# weather_latitude = 41.0
+# weather_longitude = -8.0
+# weather_location = "Localidade"
+# Optional forecast thresholds, disabled if omitted; these are not official warnings.
+# weather_rain_disruption_mm = 20.0
+# weather_wind_disruption_kph = 60.0
+
+# Set demo_mode=false for real data; uncomment source tables and replace URLs.
+# [[calendar_feeds]]
+# id = "family"
+# label = "Família"
+# url = "https://example.com/calendar.ics"
+# person = "Pessoa"
+
+# [[rss_feeds]]
+# id = "rtp"
+# label = "RTP"
+# category = "portugal"
+# url = "https://www.rtp.pt/noticias/rss/pais"
+# curated = false
+# keywords = []
+# Public event listing pages (schema.org JSON-LD); shown on the family screen at weekends.
+# [[event_feeds]]
+# id = "eventos-vila"
+# label = "Vila"
+# url = "https://www.viralagenda.com/pt/<distrito>/<concelho>"
+# distance_km = 10
+
+# World category requires curated=true or explicit keywords before stories display.

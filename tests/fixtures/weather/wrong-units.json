@@ -1,0 +1,77 @@
+{
+  "latitude": 38.72,
+  "longitude": -9.14,
+  "generationtime_ms": 0.15,
+  "utc_offset_seconds": 3600,
+  "timezone": "Europe/Lisbon",
+  "timezone_abbreviation": "WEST",
+  "elevation": 30.0,
+  "current_units": {
+    "time": "iso8601",
+    "interval": "seconds",
+    "temperature_2m": "°C",
+    "wind_speed_10m": "mph",
+    "weather_code": "wmo code"
+  },
+  "current": {
+    "time": "2026-10-04T12:00",
+    "interval": 900,
+    "temperature_2m": 18.4,
+    "wind_speed_10m": 12.6,
+    "weather_code": 63
+  },
+  "daily_units": {
+    "time": "iso8601",
+    "temperature_2m_max": "°C",
+    "temperature_2m_min": "°C",
+    "rain_sum": "mm",
+    "precipitation_probability_max": "%",
+    "wind_speed_10m_max": "km/h",
+    "sunrise": "iso8601",
+    "sunset": "iso8601",
+    "uv_index_max": "index",
+    "weather_code": "wmo code"
+  },
+  "daily": {
+    "time": [
+      "2026-10-04",
+      "2026-10-05"
+    ],
+    "temperature_2m_max": [
+      22.1,
+      23.0
+    ],
+    "temperature_2m_min": [
+      15.2,
+      14.8
+    ],
+    "rain_sum": [
+      4.2,
+      0.0
+    ],
+    "precipitation_probability_max": [
+      70,
+      5
+    ],
+    "wind_speed_10m_max": [
+      18.0,
+      10.0
+    ],
+    "sunrise": [
+      "2026-10-04T07:30",
+      "2026-10-05T07:31"
+    ],
+    "sunset": [
+      "2026-10-04T19:15",
+      "2026-10-05T19:13"
+    ],
+    "uv_index_max": [
+      4.5,
+      5.0
+    ],
+    "weather_code": [
+      3,
+      1
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Notícias de exemplo</title>
+    <link>https://news.example.pt/</link>
+    <description>Feed sintético para testes.</description>
+    <item>
+      <guid>story-001</guid>
+      <link>https://news.example.pt/portugal/medidas?utm_source=feed#top</link>
+      <title>Portugal &lt;b&gt;anuncia&lt;/b&gt; novas medidas</title>
+      <pubDate>Sun, 04 Oct 2026 11:00:00 GMT</pubDate>
+      <content:encoded><![CDATA[<p>A &amp; B avançam&#x7F;.</p><script>não incluir este segredo</script><style>.private{display:none}</style><p>Mais detalhes.</p>]]></content:encoded>
+    </item>
+    <item>
+      <guid>story-duplicate</guid>
+      <link>https://NEWS.example.pt/portugal/medidas/</link>
+      <title>Outro título para a mesma ligação</title>
+      <pubDate>Sun, 04 Oct 2026 10:50:00 GMT</pubDate>
+      <description>Duplicado por ligação canónica.</description>
+    </item>
+    <item>
+      <guid>story-002</guid>
+      <link>https://world.example.org/economia</link>
+      <title>Mercados recuperam</title>
+      <pubDate>Sun, 04 Oct 2026 10:30:00 GMT</pubDate>
+      <description><![CDATA[<div>Resumo com <b>texto</b> seguro &amp; útil.</div>]]></description>
+    </item>
+    <item>
+      <guid>story-undated</guid>
+      <link>https://news.example.pt/sem-data</link>
+      <title>Notícia sem data</title>
+      <description>Deve ser ignorada.</description>
+    </item>
+    <item>
+      <guid>story-old</guid>
+      <link>https://news.example.pt/noticia-antiga</link>
+      <title>Notícia antiga</title>
+      <pubDate>Thu, 01 Oct 2026 11:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <guid>story-future</guid>
+      <link>https://news.example.pt/noticia-futura</link>
+      <title>Notícia futura</title>
+      <pubDate>Sun, 04 Oct 2026 12:30:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

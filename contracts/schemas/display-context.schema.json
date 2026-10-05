@@ -1,0 +1,521 @@
+{
+  "$defs": {
+    "DisplayFact": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 40,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "value": {
+          "maxLength": 40,
+          "minLength": 1,
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "value"
+      ],
+      "title": "DisplayFact",
+      "type": "object"
+    },
+    "DisplayItem": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "alert",
+            "calendar",
+            "weather",
+            "news",
+            "countdown",
+            "verse",
+            "fact",
+            "photo",
+            "local_event"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "summary": {
+          "anyOf": [
+            {
+              "maxLength": 280,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Summary"
+        },
+        "priority": {
+          "default": 0,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Priority",
+          "type": "integer"
+        },
+        "occurred_at": {
+          "format": "date-time",
+          "title": "Occurred At",
+          "type": "string"
+        },
+        "person": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Person"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "is_protected": {
+          "default": false,
+          "title": "Is Protected",
+          "type": "boolean"
+        },
+        "severity": {
+          "default": "ordinary",
+          "enum": [
+            "ordinary",
+            "disruption",
+            "critical"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "ends_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ends At"
+        },
+        "all_day": {
+          "default": false,
+          "title": "All Day",
+          "type": "boolean"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "facts": {
+          "items": {
+            "$ref": "#/$defs/DisplayFact"
+          },
+          "maxItems": 3,
+          "title": "Facts",
+          "type": "array"
+        },
+        "distance_km": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Distance Km"
+        },
+        "image_path": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Image Path"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "title",
+        "occurred_at"
+      ],
+      "title": "DisplayItem",
+      "type": "object"
+    },
+    "WeatherHour": {
+      "additionalProperties": false,
+      "properties": {
+        "at": {
+          "format": "date-time",
+          "title": "At",
+          "type": "string"
+        },
+        "rain_mm": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rain Mm"
+        },
+        "wind_kph": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Wind Kph"
+        }
+      },
+      "required": [
+        "at"
+      ],
+      "title": "WeatherHour",
+      "type": "object"
+    },
+    "WeatherPeriod": {
+      "additionalProperties": false,
+      "properties": {
+        "summary": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Summary"
+        },
+        "temperature_c": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Temperature C"
+        },
+        "temperature_min_c": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Temperature Min C"
+        },
+        "temperature_max_c": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Temperature Max C"
+        },
+        "rain_probability_pct": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rain Probability Pct"
+        },
+        "rain_mm": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rain Mm"
+        },
+        "wind_kph": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Wind Kph"
+        },
+        "uv_index": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Uv Index"
+        }
+      },
+      "title": "WeatherPeriod",
+      "type": "object"
+    },
+    "WeatherSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "observed_at": {
+          "format": "date-time",
+          "title": "Observed At",
+          "type": "string"
+        },
+        "timezone": {
+          "title": "Timezone",
+          "type": "string"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "current": {
+          "$ref": "#/$defs/WeatherPeriod"
+        },
+        "today": {
+          "$ref": "#/$defs/WeatherPeriod"
+        },
+        "tomorrow": {
+          "$ref": "#/$defs/WeatherPeriod"
+        },
+        "sunrise": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sunrise"
+        },
+        "sunset": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sunset"
+        },
+        "hourly": {
+          "items": {
+            "$ref": "#/$defs/WeatherHour"
+          },
+          "maxItems": 72,
+          "title": "Hourly",
+          "type": "array"
+        }
+      },
+      "required": [
+        "observed_at",
+        "timezone",
+        "source",
+        "current",
+        "today",
+        "tomorrow"
+      ],
+      "title": "WeatherSnapshot",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "timezone": {
+      "title": "Timezone",
+      "type": "string"
+    },
+    "mode": {
+      "const": "family",
+      "default": "family",
+      "title": "Mode",
+      "type": "string"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/DisplayItem"
+      },
+      "title": "Items",
+      "type": "array"
+    },
+    "protected_alert_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Protected Alert Ids",
+      "type": "array"
+    },
+    "demo": {
+      "default": true,
+      "title": "Demo",
+      "type": "boolean"
+    },
+    "source_warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Source Warnings",
+      "type": "array"
+    },
+    "unavailable_kinds": {
+      "items": {
+        "enum": [
+          "calendar",
+          "weather",
+          "rss"
+        ],
+        "type": "string"
+      },
+      "title": "Unavailable Kinds",
+      "type": "array"
+    },
+    "weather": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/WeatherSnapshot"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "people": {
+      "items": {
+        "type": "string"
+      },
+      "title": "People",
+      "type": "array"
+    },
+    "night": {
+      "default": false,
+      "title": "Night",
+      "type": "boolean"
+    },
+    "news_digest": {
+      "default": false,
+      "title": "News Digest",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "generated_at",
+    "timezone",
+    "items"
+  ],
+  "title": "DisplayContext",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

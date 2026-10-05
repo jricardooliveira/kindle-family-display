@@ -1,0 +1,36 @@
+{
+  "ok": true,
+  "timezone": "Europe/Lisbon",
+  "screens": ["news-weather", "family", "calendar"],
+  "generated_at": "2026-10-04T07:30:00+01:00",
+  "navigation_order": ["news-weather", "family", "calendar"],
+  "demo": true,
+  "screen_status": [
+    {
+      "screen": "news-weather",
+      "generated_at": "2026-10-04T07:30:00+01:00",
+      "width": 800,
+      "height": 600,
+      "stale": false,
+      "last_error": null
+    },
+    {
+      "screen": "family",
+      "generated_at": "2026-10-04T07:30:00+01:00",
+      "width": 800,
+      "height": 600,
+      "stale": false,
+      "last_error": null
+    },
+    {
+      "screen": "calendar",
+      "generated_at": "2026-10-04T07:30:00+01:00",
+      "width": 800,
+      "height": 600,
+      "stale": false,
+      "last_error": null
+    }
+  ],
+  "stale_sources": [],
+  "last_error": null
+}

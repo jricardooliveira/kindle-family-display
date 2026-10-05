@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Feed válido sem artigos</title>
+    <link>https://empty.example.org/</link>
+    <description>Este feed está vazio de forma válida.</description>
+  </channel>
+</rss>

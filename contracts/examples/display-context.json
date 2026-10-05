@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-10-04T07:30:00+01:00",
+  "timezone": "Europe/Lisbon",
+  "mode": "family",
+  "protected_alert_ids": [
+    "weather-heavy-rain-20261004"
+  ],
+  "items": [
+    {
+      "id": "weather-heavy-rain-20261004",
+      "kind": "alert",
+      "title": "Heavy rain after 17:00",
+      "summary": "21 mm expected; take an umbrella",
+      "priority": 100,
+      "occurred_at": "2026-10-04T07:30:00+01:00",
+      "source": "weather-fixture",
+      "is_protected": true
+    },
+    {
+      "id": "cal-joao-42",
+      "kind": "calendar",
+      "title": "Platform meeting",
+      "summary": null,
+      "priority": 65,
+      "occurred_at": "2026-10-04T09:30:00+01:00",
+      "person": "João",
+      "source": "calendar-fixture",
+      "is_protected": false
+    }
+  ]
+}

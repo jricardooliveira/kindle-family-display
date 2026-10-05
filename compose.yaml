@@ -1,0 +1,41 @@
+services:
+  kindle-hub:
+    build: .
+    restart: unless-stopped
+    environment:
+      CONFIG_FILE: /config/config.toml
+      DATABASE_URL: sqlite:////data/kindle.db
+      CACHE_DIR: /cache
+      PHOTOS_DIR: /photos
+      AI_API_KEY_FILE: /run/secrets/ai_key
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:${APP_PORT:-8000}:8000"
+    volumes:
+      - type: bind
+        source: ./config.toml
+        target: /config/config.toml
+        read_only: true
+        bind:
+          create_host_path: false
+      - ./photos:/photos:ro
+      - ./secrets:/run/secrets:ro
+      - app-data:/data
+      - render-cache:/cache
+    mem_limit: 190m
+    memswap_limit: 190m
+    pids_limit: 64
+    read_only: true
+    tmpfs:
+      - /tmp:size=8m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+volumes:
+  app-data:
+  render-cache:

@@ -1,0 +1,11 @@
+{
+  "id": "cal-museum-42",
+  "title": "Museum visit",
+  "starts_at": "2026-10-04T10:30:00+01:00",
+  "ends_at": "2026-10-04T12:00:00+01:00",
+  "summary": "Family visit",
+  "person": "Alex",
+  "source": "calendar-fixture",
+  "all_day": false,
+  "is_protected": false
+}
