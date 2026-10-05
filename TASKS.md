@@ -1,5 +1,15 @@
 # Agent-sized implementation tasks
 
+## T11 — Equal Portuguese, English and German support (2026-10-05)
+
+**Owner:** Coordinator, with bounded Display and Data assignments.
+**Depends on:** accepted settings, contracts, rendering and data collection slices below.
+**Scope:** language/country configuration, complete built-in translations, country-neutral news,
+country-aware optional AI, PT/UK/German starter configs and German setup instructions.
+**Acceptance:** localized offline demos and live feed presets, backward-compatible Portuguese
+settings, language-safe caches, translation/rendering regression tests, full lint/type/test checks.
+**Plan:** `docs/plans/2026-10-05-i18n.md`.
+
 Tasks are sequenced by dependencies; coordinator may parallelize tasks only when dependency and file ownership permit. “Verify” means run the task's specified checks; no real credentials or family data are needed.
 
 | ID | Task | Owner role | Depends on |
