@@ -1,6 +1,11 @@
 # Copy to config.toml. Edit this file, then restart the app/container.
 # Private config.toml is ignored and mounted read-only; never share subscription URLs.
 app_env = "development"
+# Equal display language options: "pt", "en", "de".
+# Country controls national news labels and optional AI relevance, independently of language.
+# Ready-to-run live presets: config.pt.example.toml, config.en.example.toml, config.de.example.toml.
+language = "pt"
+country = "PT"
 demo_mode = true
 ai_enabled = false
 # With ai_enabled = true, an OpenAI key file (bare key or NAME=key) lets a model score
@@ -29,6 +34,10 @@ rss_poll_minutes = 60
 # Compose mounts ./photos and sets this itself; set it only for local development.
 # photos_dir = "photos"
 
+# Calendar files (.ics) exported from a calendar app, used alongside or instead of links.
+# Compose mounts ./calendars and sets this itself; set it only for local development.
+# calendars_dir = "calendars"
+
 # Local development paths; Compose overrides these with persistent volume paths.
 database_url = "sqlite:///.data/kindle.db"
 cache_dir = ".cache"
@@ -51,7 +60,7 @@ cache_dir = ".cache"
 # [[rss_feeds]]
 # id = "rtp"
 # label = "RTP"
-# category = "portugal"
+# category = "national"
 # url = "https://www.rtp.pt/noticias/rss/pais"
 # curated = false
 # keywords = []
@@ -63,3 +72,4 @@ cache_dir = ".cache"
 # distance_km = 10
 
 # World category requires curated=true or explicit keywords before stories display.
+# "national" uses your configured country; legacy "portugal" remains supported.

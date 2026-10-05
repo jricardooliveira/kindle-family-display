@@ -7,6 +7,8 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from app.i18n import Language
+
 Screen = Literal["news-weather", "news", "family", "calendar", "nearby", "photo"]
 Mode = Literal["family"]
 Severity = Literal["ordinary", "disruption", "critical"]
@@ -21,7 +23,7 @@ ItemKind = Literal[
     "photo",
     "local_event",
 ]
-NewsCategory = Literal["portugal", "world"]
+NewsCategory = Literal["portugal", "national", "world"]
 
 
 class DisplayLayout(StrEnum):
@@ -57,6 +59,7 @@ def _optional_aware(value: datetime | None) -> datetime | None:
 
 
 class WeatherPeriod(ContractModel):
+    code: int | None = Field(default=None, ge=0, le=99)
     summary: str | None = None
     temperature_c: float | None = None
     temperature_min_c: float | None = None
@@ -123,6 +126,7 @@ class DisplayItem(ContractModel):
 class DisplayContext(ContractModel):
     generated_at: datetime
     timezone: str
+    language: Language = "pt"
     mode: Mode = "family"
     items: list[DisplayItem]
     protected_alert_ids: list[str] = Field(default_factory=list)

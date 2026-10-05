@@ -1,0 +1,24 @@
+# Copy to config.toml. No accounts or keys; see docs/setup.en.md.
+# To try without Internet access, change demo_mode to true.
+language = "en"
+country = "GB"
+timezone = "Europe/London"
+demo_mode = false
+ai_enabled = false
+screen_width = 800
+screen_height = 600
+screen_rotation = 0
+refresh_minutes = 30
+database_url = "sqlite:///.data/kindle.db"
+cache_dir = ".cache"
+
+# London is a public example location. Replace with your own town.
+weather_latitude = 51.5074
+weather_longitude = -0.1278
+weather_location = "London"
+
+[[rss_feeds]]
+id = "bbc-uk"
+label = "BBC News"
+category = "national"
+url = "https://feeds.bbci.co.uk/news/uk/rss.xml"

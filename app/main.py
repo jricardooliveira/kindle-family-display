@@ -73,7 +73,7 @@ def create_app(
             with refresh_lock:
                 try:
                     context = (
-                        demo_context(refresh_time, settings.timezone)
+                        demo_context(refresh_time, settings.timezone, language=settings.language)
                         if pipeline is None
                         else pipeline.collect(refresh_time)
                     )

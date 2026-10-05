@@ -20,4 +20,6 @@ openapi_key
 config.toml
 
 photos/
+calendars/
+*.ics
 secrets/

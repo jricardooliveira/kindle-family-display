@@ -104,7 +104,7 @@ def test_pipeline_collects_and_maps_configured_sources_without_leaking_urls(tmp_
     assert "2026-10-05" in weather.summary
     assert "18.4" in weather.summary
     assert "22.1" in weather.summary
-    assert "4.2" in weather.summary
+    assert "4,2" in weather.summary
     assert "vento 18km/h" in weather.summary
     assert "07:30" in weather.summary
     assert "19:15" in weather.summary
@@ -221,7 +221,7 @@ def test_pipeline_preserves_all_day_exclusive_end_and_protected_forecast_thresho
     assert alerts[0].title == "Chuva e vento fortes"
     assert [(fact.label, fact.value) for fact in alerts[0].facts] == [
         ("Dia", "Hoje"),
-        ("Chuva", "4.2 mm"),
+        ("Chuva", "4,2 mm"),
         ("Vento", "18 km/h"),
     ]
     assert context.weather is not None
@@ -471,3 +471,40 @@ def test_pipeline_shows_one_story_per_topic_and_cleans_live_blog_titles(tmp_path
     assert _news_title("14h30. Greve") == "Greve"
     assert _news_title("7 homens detidos") == "7 homens detidos"
     cache.close()
+
+
+def test_calendar_files_in_a_folder_are_read_without_any_network_fetch(tmp_path):
+    folder = tmp_path / "calendars"
+    folder.mkdir()
+    named = event_calendar(5).replace(b"BEGIN:VEVENT", b"X-WR-CALNAME:Escola\nBEGIN:VEVENT", 1)
+    (folder / "Calendário Escola -1 Período.ics").write_bytes(named)
+    (folder / "notes.txt").write_text("not a calendar")
+    settings = settings_for(tmp_path).model_copy(
+        update={"calendar_feeds": [], "calendars_dir": str(folder)}
+    )
+    bodies = payloads()
+    fetched: list[str] = []
+    pipeline = DataPipeline(
+        settings,
+        SourceCache(settings.database_url),
+        fetcher=lambda url: fetched.append(url) or bodies[url],
+    )
+
+    context = pipeline.collect(NOW)
+
+    events = [item for item in context.items if item.kind == "calendar"]
+    assert len(events) == 1
+    assert events[0].source == "Escola"
+    assert "" not in fetched
+    status = {source.id: source for source in pipeline.source_status(NOW)}
+    assert status["file-calendario-escola-1-periodo"].last_error is None
+
+
+def test_missing_calendar_folder_is_ignored(tmp_path):
+    settings = settings_for(tmp_path).model_copy(update={"calendars_dir": str(tmp_path / "absent")})
+    bodies = payloads()
+    pipeline = DataPipeline(
+        settings, SourceCache(settings.database_url), fetcher=lambda url: bodies[url]
+    )
+    pipeline.collect(NOW)
+    assert not any(source.id.startswith("file-") for source in pipeline.source_status(NOW))

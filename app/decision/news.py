@@ -9,7 +9,7 @@ from app.contracts import NewsItem
 
 _MAX_AGE = timedelta(hours=48)
 _MAX_FUTURE = timedelta(minutes=5)
-_CATEGORIES = ("portugal", "world")
+_CATEGORIES = ("national", "portugal", "world")
 # How many recent stories a rotation window cycles through.
 ROTATION_POOL = 8
 

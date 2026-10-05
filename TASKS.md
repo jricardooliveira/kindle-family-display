@@ -9,6 +9,10 @@ country-aware optional AI, PT/UK/German starter configs and German setup instruc
 **Acceptance:** localized offline demos and live feed presets, backward-compatible Portuguese
 settings, language-safe caches, translation/rendering regression tests, full lint/type/test checks.
 **Plan:** `docs/plans/2026-10-05-i18n.md`.
+**Status (2026-10-05):** Completed. PT/EN/DE starter configs run through the live fixture-backed
+app, official public RTP/BBC/Tagesschau feeds fetched and parsed as recent stories, Docker image
+builds and serves German PNGs, all 256 tests pass, and Ruff/mypy checks pass. Real calendar links,
+family locations and personal details are not part of the presets.
 
 Tasks are sequenced by dependencies; coordinator may parallelize tasks only when dependency and file ownership permit. “Verify” means run the task's specified checks; no real credentials or family data are needed.
 

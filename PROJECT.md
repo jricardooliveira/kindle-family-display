@@ -11,7 +11,12 @@ Repurpose an older Kindle as a calm, glanceable family information display. A li
 - Graceful degradation: stale cached image remains available if a collector or AI provider fails.
 
 ## Audience and locale
-One family in Portugal. Use Europe/Lisbon timezone and Portuguese-aware date/time formatting. The selected language/translation and exact family names are configuration decisions; examples use synthetic names.
+Families in Portugal, the United Kingdom and Germany. Portuguese (`pt`), English
+(`en`) and German (`de`) have equal built-in display, date, weather, alert, fact and
+demo support. Language, country and IANA timezone are independent settings; legacy
+configs default to Portuguese/Portugal/Europe/Lisbon. Public starter configs use
+Lisbon, London or Berlin as explicitly labeled example locations. Family names and
+source content remain private configuration; examples use synthetic names.
 
 ## V1 goals and priorities
 1. Prove Kindle can retrieve and display a PNG from the Beelink; the Kindle is a Paperwhite 11th generation (PW5), with native portrait resolution 1236×1648. Firmware 5.16.7 and existing jailbreak/KOReader installation confirmed; client navigation and refresh integration remain pending.
@@ -35,7 +40,10 @@ One family in Portugal. Use Europe/Lisbon timezone and Portuguese-aware date/tim
 ## Data sources
 - ICS calendars: configured private URLs; poll every 15–30 minutes. Never commit actual URLs. Shared Apple Reminders are optional and need a separate feasibility decision.
 - Weather: provider adapter using configured home coordinates; Open-Meteo selected; home town configured privately.
-- News: allowlisted RSS feeds; family view only Portugal and major world stories. Fetch many, display at most two.
+- News: allowlisted RSS feeds; national news for the configured country and major
+  world stories. Ready-to-run presets use RTP País (PT), BBC UK (GB), and Tagesschau
+  Inland (DE). `national` is country-neutral; legacy `portugal` is retained. Fetch
+  many, show at most two in the weather layout (up to four in the news digest).
 - Optional later adapters: traffic, nearby events, travel/flight status, verse provider, photo directory.
 - Optional AI API: supplied normalized context only; avoid a request for every Kindle image fetch. Run on changed/expired decision, cache output, and enforce timeout/fallback.
 
@@ -53,7 +61,8 @@ Compose starts the app; health/status endpoints work; demo mode produces three v
 ## Open decisions (do not block scaffolding)
 1. Paperwhite 11th generation confirmed; native portrait 1236×1648 configured. Firmware 5.16.7 and existing jailbreak/KOReader installation confirmed. KOReader version, final orientation, touch navigation and refresh strategy remain open.
 2. Weather uses Open-Meteo without an API key; home coordinates are local configuration.
-3. RTP Portuguese headlines are the editable initial default; world feed/significance preferences remain open.
+3. RTP País, BBC UK and Tagesschau Inland are the editable PT/GB/DE starter sources;
+   world feed/significance preferences remain open.
 4. AI vendor/model and budget; default is disabled until configured.
 5. Calendar feed count, labels, privacy classification, and importance overrides.
 6. Exact Portuguese Bible translation/source and licensing; whether this belongs in V2.

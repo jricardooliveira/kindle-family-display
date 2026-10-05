@@ -1,0 +1,24 @@
+# Copie para config.toml. Sem contas nem chaves; guia em docs/setup.pt.md.
+# Para experimentar sem Internet, altere demo_mode para true.
+language = "pt"
+country = "PT"
+timezone = "Europe/Lisbon"
+demo_mode = false
+ai_enabled = false
+screen_width = 800
+screen_height = 600
+screen_rotation = 0
+refresh_minutes = 30
+database_url = "sqlite:///.data/kindle.db"
+cache_dir = ".cache"
+
+# Lisboa é apenas um exemplo público. Substitua pela sua localidade.
+weather_latitude = 38.7223
+weather_longitude = -9.1393
+weather_location = "Lisboa"
+
+[[rss_feeds]]
+id = "rtp-pais"
+label = "RTP"
+category = "national"
+url = "https://www.rtp.pt/noticias/rss/pais"

@@ -7,6 +7,7 @@ services:
       DATABASE_URL: sqlite:////data/kindle.db
       CACHE_DIR: /cache
       PHOTOS_DIR: /photos
+      CALENDARS_DIR: /calendars
       AI_API_KEY_FILE: /run/secrets/ai_key
     ports:
       - "${BIND_ADDRESS:-127.0.0.1}:${APP_PORT:-8000}:8000"
@@ -18,6 +19,7 @@ services:
         bind:
           create_host_path: false
       - ./photos:/photos:ro
+      - ./calendars:/calendars:ro
       - ./secrets:/run/secrets:ro
       - app-data:/data
       - render-cache:/cache

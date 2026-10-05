@@ -2,6 +2,8 @@
 
 Turn an old Kindle into a calm, always-on family information screen.
 
+**Setup guides:** [English](docs/setup.en.md) · [Deutsch](docs/setup.de.md) · [Português](docs/setup.pt.md)
+
 A small Python service runs on a home server, gathers the things a family actually wants at a glance (weather, the day's commitments, the news that matters, what's on nearby), draws them as crisp black-and-white pages, and the Kindle simply shows the latest picture. No app on the Kindle, no cloud account, no scrolling ticker.
 
 | | |
@@ -54,15 +56,38 @@ calendars (ICS) · weather (Open-Meteo) · news (RSS) · event listings · photo
 - **Small footprint.** One container, no browser engine, about 50–90 MB of memory, capped at 190 MB.
 - **Fails quietly.** If a source is down, the last good data stays on screen with a "stale" note.
 
-The visual design (layouts, type, icons) was made as an HTML prototype and then rebuilt in Pillow; the written spec is in [docs/design-handoff.md](docs/design-handoff.md) (Portuguese). The interface text is in Portuguese; it lives in `app/rendering/renderer.py` if you want another language.
+The visual design (layouts, type, icons) was made as an HTML prototype and then rebuilt in Pillow; the written spec is in [docs/design-handoff.md](docs/design-handoff.md) (Portuguese). Built-in display text, dates, weather, alerts, daily facts and demo content support **Portuguese, English and German equally**. Translation catalogs live in `app/i18n/`; no operating-system locale installation is needed.
 
 ## What you need
 
 - A Kindle with [KOReader](https://koreader.rocks/) installed (which requires a jailbroken Kindle) and the [TRMNL KOReader plugin](https://github.com/usetrmnl/trmnl-koreader). Built and tested for a Paperwhite 11th generation; other sizes are a configuration change.
 - An always-on machine on the same network with Docker and Docker Compose (a mini PC, NAS or Raspberry Pi class device).
-- Optional: shared calendar links (ICS), an OpenAI API key for news scoring, a folder of photos.
+- Optional: shared calendar links or exported calendar files (ICS), an OpenAI API key for news scoring, a folder of photos.
 
 ## Quick start
+
+For live news and weather without accounts, choose a starter configuration:
+
+| Country | Copy to `config.toml` | Initial weather | News source |
+|---|---|---|---|
+| Portugal | `config.pt.example.toml` | Lisbon | [RTP País](https://www.rtp.pt/noticias/rss/pais) |
+| United Kingdom | `config.en.example.toml` | London | [BBC News UK](https://feeds.bbci.co.uk/news/uk/rss.xml) |
+| Germany | `config.de.example.toml` | Berlin | [Tagesschau Inland](https://www.tagesschau.de/infoservices/rssfeeds) |
+
+After cloning, a German setup is:
+
+```sh
+cp config.de.example.toml config.toml
+mkdir -p photos calendars secrets
+docker compose up --build -d
+```
+
+Open `http://127.0.0.1:8000/kindle/news-weather.png` on the server. Change the
+example weather location to your town. The family page shows weather and a daily
+fact until you add calendars. Feed availability depends on the publishers; their
+usage terms apply. These presets are intended for a private home display.
+
+### Offline demo
 
 Demo mode needs no accounts or keys and shows example content.
 
@@ -70,11 +95,15 @@ Demo mode needs no accounts or keys and shows example content.
 git clone <this repository>
 cd <repository folder>
 cp config.example.toml config.toml
-mkdir -p photos secrets
+mkdir -p photos calendars secrets
 docker compose up --build -d
 ```
 
 Then open `http://127.0.0.1:8000/kindle/news-weather.png` in a browser. The other pages are `news`, `family`, `calendar`, `nearby` and `photo` at the same address pattern. `http://127.0.0.1:8000/api/status` reports what was fetched and when.
+
+Set `language = "pt"`, `"en"` or `"de"` in `config.toml` to choose the demo
+language. You can also set `demo_mode = true` in any country preset. Demo rendering
+makes no upstream requests; the initial Docker build still needs Internet access.
 
 ## Configuration
 
@@ -83,11 +112,15 @@ Everything is in `config.toml` (kept out of version control). `config.example.to
 | Setting | What it does |
 |---|---|
 | `demo_mode` | `true` shows example content; `false` uses your sources. |
+| `language` | `"pt"`, `"en"` or `"de"`; default `"pt"` for existing installations. |
+| `country` | `"PT"`, `"GB"` or `"DE"`; national news labels and optional AI relevance. |
+| `timezone` | IANA timezone, such as `Europe/Berlin`; independent of language and country. |
 | `screen_width`, `screen_height`, `screen_rotation` | Output size. For a Paperwhite 11 held sideways: `1648`, `1236`, `90` (or `270`). |
 | `[[calendar_feeds]]` | Shared calendar links (ICS), each optionally tied to a person. |
+| `calendars/` folder | Calendar files (`.ics`) exported from a calendar app; every file in the folder is read, no link needed. |
 | `weather_latitude`, `weather_longitude`, `weather_location` | Turns on the Open-Meteo forecast. No key needed. |
 | `weather_rain_disruption_mm`, `weather_wind_disruption_kph` | Forecasts above these trigger the alert page. |
-| `[[rss_feeds]]` | News feeds. |
+| `[[rss_feeds]]` | News feeds: `national` for your country; `world` requires `curated = true` or `keywords`. Legacy `portugal` remains supported. |
 | `[[event_feeds]]` | Event listing pages that embed schema.org event data, with a rough distance from home. |
 | `news_rotation_windows`, `news_digest_windows` | Periods such as `"07:30-08:30"` when the news steps through stories or shows the multi-story layout. |
 | `night_window` | When the family page switches to "tomorrow morning". |
@@ -97,6 +130,18 @@ Everything is in `config.toml` (kept out of version control). `config.example.to
 Photos go in `photos/` (jpg or png). A descriptive file name becomes the caption.
 
 Restart the container after editing: `docker compose up -d --force-recreate`.
+
+Language, country and timezone can be mixed, for example English display text in
+Germany. Changing them does not replace your configured feeds or weather location.
+Calendar titles, news headlines, person names and your photo captions retain their
+original language. Existing configs without the new settings keep Portuguese and
+Portugal defaults. Language changes regenerate cached screens and weather text;
+AI scores are kept separately for each language/country combination.
+
+To add another language later, extend both catalogs in `app/i18n/`, the validated
+language type, and the translation/rendering tests. Each language must contain the
+same keys and interpolation placeholders; there is no silent fallback that could
+mix languages on a page.
 
 ### Making it reachable from the Kindle
 
@@ -120,7 +165,7 @@ Every fetch returns the next page, so the plugin's timer cycles the pages by its
 
 ## Updating a remote server
 
-`scripts/deploy.sh user@host [remote-dir]` copies the project to another machine over SSH and rebuilds the container there. It leaves that machine's `.env` alone, copies `photos/` without deleting anything, and copies a local `openapi_key` file to `secrets/ai_key` if one exists.
+`scripts/deploy.sh user@host [remote-dir]` copies the project to another machine over SSH and rebuilds the container there. It leaves that machine's `.env` alone, copies `photos/` without deleting anything, mirrors `calendars/`, and copies a local `openapi_key` file to `secrets/ai_key` if one exists.
 
 ## About the AI scoring
 

@@ -195,7 +195,7 @@ def test_alert_takes_over_the_top_screen_as_an_inverted_page(drawn: Drawn) -> No
 
     assert image.getpixel((3, 3)) == 0
     assert "Chuva forte" in drawn.joined
-    assert "Aviso meteorológico · +1 avisos" in drawn.text
+    assert "Aviso meteorológico · +1 aviso" in drawn.text
     assert {"Das", "17:00", "Às", "23:00", "Recolha a roupa."} <= set(drawn.text)
     assert "Notícia do dia" not in drawn.text
 

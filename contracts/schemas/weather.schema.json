@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$defs": {
     "WeatherHour": {
       "additionalProperties": false,
@@ -44,6 +45,20 @@
     "WeatherPeriod": {
       "additionalProperties": false,
       "properties": {
+        "code": {
+          "anyOf": [
+            {
+              "maximum": 99,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Code"
+        },
         "summary": {
           "anyOf": [
             {
@@ -218,6 +233,5 @@
     "tomorrow"
   ],
   "title": "WeatherSnapshot",
-  "type": "object",
-  "$schema": "https://json-schema.org/draft/2020-12/schema"
+  "type": "object"
 }

@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$defs": {
     "DisplayFact": {
       "additionalProperties": false,
@@ -249,6 +250,20 @@
     "WeatherPeriod": {
       "additionalProperties": false,
       "properties": {
+        "code": {
+          "anyOf": [
+            {
+              "maximum": 99,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Code"
+        },
         "summary": {
           "anyOf": [
             {
@@ -437,6 +452,16 @@
       "title": "Timezone",
       "type": "string"
     },
+    "language": {
+      "default": "pt",
+      "enum": [
+        "pt",
+        "en",
+        "de"
+      ],
+      "title": "Language",
+      "type": "string"
+    },
     "mode": {
       "const": "family",
       "default": "family",
@@ -516,6 +541,5 @@
     "items"
   ],
   "title": "DisplayContext",
-  "type": "object",
-  "$schema": "https://json-schema.org/draft/2020-12/schema"
+  "type": "object"
 }

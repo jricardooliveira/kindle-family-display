@@ -17,12 +17,16 @@ rsync -az --delete \
   --exclude '.pytest_cache/' --exclude '.ruff_cache/' --exclude '.mypy_cache/' \
   --exclude '.env' --exclude '.env.*' --exclude 'openapi_key' --exclude 'openai_key' \
   --exclude '.DS_Store' --exclude '*.zip' --exclude '*.egg-info/' \
-  --exclude 'design_handoff_kindle_landscape*/' --exclude '.playwright-mcp/' --exclude 'photos/' --exclude 'secrets/' \
+  --exclude 'design_handoff_kindle_landscape*/' --exclude '.playwright-mcp/' --exclude 'photos/' --exclude 'calendars/' --exclude 'secrets/' --exclude '*.ics' \
   ./ "$TARGET:$REMOTE_DIR/"
 
 # Photos are only added, never removed, so ones placed on the server directly survive.
 mkdir -p photos
 rsync -az --exclude '.DS_Store' photos/ "$TARGET:$REMOTE_DIR/photos/"
+
+# Calendar files mirror the local folder: removing one here removes it from the display.
+mkdir -p calendars
+rsync -az --delete --exclude '.DS_Store' calendars/ "$TARGET:$REMOTE_DIR/calendars/"
 
 # The optional AI key lives outside the image; it is copied only when present locally.
 ssh "$TARGET" "mkdir -p $REMOTE_DIR/secrets"
@@ -32,4 +36,4 @@ fi
 
 # The container runs as another user, so the mounted config must be readable by it;
 # the directory itself stays private to the login user.
-ssh "$TARGET" "cd $REMOTE_DIR && chmod 700 . && chmod 644 config.toml && chmod -R a+rX photos secrets && docker compose up --build -d --force-recreate"
+ssh "$TARGET" "cd $REMOTE_DIR && chmod 700 . && chmod 644 config.toml && chmod -R a+rX photos calendars secrets && docker compose up --build -d --force-recreate"

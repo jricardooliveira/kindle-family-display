@@ -25,7 +25,7 @@ def parse_rss(
     payload: bytes,
     *,
     source_id: str,
-    category: Literal["portugal", "world"],
+    category: Literal["national", "portugal", "world"],
     now: datetime,
     max_items: int = 64,
 ) -> list[NewsItem]:
@@ -34,8 +34,8 @@ def parse_rss(
         raise TypeError("RSS payload must be bytes")
     if not source_id or not _SOURCE_ID_PATTERN.fullmatch(source_id):
         raise ValueError("source_id must be a short stable identifier")
-    if category not in ("portugal", "world"):
-        raise ValueError("category must be 'portugal' or 'world'")
+    if category not in ("national", "portugal", "world"):
+        raise ValueError("category must be 'national', 'portugal' or 'world'")
     current = _aware_utc(now)
     if isinstance(max_items, bool) or not isinstance(max_items, int) or max_items < 0:
         raise ValueError("max_items must be a non-negative integer")

@@ -4,7 +4,7 @@ import os
 import re
 import tomllib
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from pydantic import (
@@ -18,6 +18,8 @@ from pydantic import (
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from app.collectors.http import validate_url
+from app.contracts.models import NewsCategory
+from app.i18n import Country, Language
 
 _SOURCE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,63}$")
 _MAX_CONFIG_BYTES = 64 * 1024
@@ -57,7 +59,7 @@ class CalendarFeed(_FeedConfig):
 
 
 class RSSFeed(_FeedConfig):
-    category: Literal["portugal", "world"] = "portugal"
+    category: NewsCategory = "portugal"
     curated: bool = False
     keywords: list[str] = Field(default_factory=list, max_length=20)
 
@@ -85,6 +87,8 @@ class Settings(BaseSettings):
     )
 
     app_env: str = "development"
+    language: Language = "pt"
+    country: Country = "PT"
     timezone: str = "Europe/Lisbon"
     screen_width: int = Field(default=800, ge=320, le=1648)
     screen_height: int = Field(default=600, ge=240, le=1648)
@@ -117,6 +121,8 @@ class Settings(BaseSettings):
     facts_enabled: bool = True
     # Folder of family photos (jpg/png); one is shown each day in alternate hours.
     photos_dir: str | None = None
+    # Folder of calendar files (.ics) used alongside, or instead of, calendar links.
+    calendars_dir: str | None = None
     weather_latitude: float | None = Field(default=None, ge=-90, le=90)
     weather_longitude: float | None = Field(default=None, ge=-180, le=180)
     weather_location: str | None = Field(default=None, max_length=80)

@@ -21,6 +21,8 @@ openapi_key
 config.toml
 
 photos/
+calendars/
+*.ics
 secrets/
 
 # Design tool exports and local tooling output

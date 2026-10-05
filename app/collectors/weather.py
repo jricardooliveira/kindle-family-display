@@ -11,6 +11,8 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from app.contracts import WeatherPeriod, WeatherSnapshot
 from app.contracts.models import WeatherHour
+from app.i18n import Language
+from app.i18n.data import CATALOG, text
 
 OPEN_METEO_ENDPOINT = "https://api.open-meteo.com/v1/forecast"
 _CURRENT = "temperature_2m,wind_speed_10m,weather_code"
@@ -19,36 +21,6 @@ _DAILY = (
     "temperature_2m_max,temperature_2m_min,rain_sum,precipitation_probability_max,"
     "wind_speed_10m_max,sunrise,sunset,uv_index_max,weather_code"
 )
-_WMO_SUMMARIES = {
-    0: "Céu limpo",
-    1: "Predominantemente limpo",
-    2: "Parcialmente nublado",
-    3: "Nublado",
-    45: "Nevoeiro",
-    48: "Nevoeiro com geada",
-    51: "Chuvisco ligeiro",
-    53: "Chuvisco moderado",
-    55: "Chuvisco intenso",
-    56: "Chuvisco gelado ligeiro",
-    57: "Chuvisco gelado intenso",
-    61: "Chuva fraca",
-    63: "Chuva moderada",
-    65: "Chuva forte",
-    66: "Chuva gelada ligeira",
-    67: "Chuva gelada forte",
-    71: "Neve fraca",
-    73: "Neve moderada",
-    75: "Neve forte",
-    77: "Grãos de neve",
-    80: "Aguaceiros fracos",
-    81: "Aguaceiros moderados",
-    82: "Aguaceiros muito fortes",
-    85: "Aguaceiros de neve fracos",
-    86: "Aguaceiros de neve fortes",
-    95: "Trovoada",
-    96: "Trovoada com granizo ligeiro",
-    99: "Trovoada forte com granizo",
-}
 _EXPECTED_CURRENT_UNITS = {
     "time": "iso8601",
     "temperature_2m": "°C",
@@ -97,7 +69,7 @@ def weather_request_url(latitude: float, longitude: float, timezone: str) -> str
     return f"{OPEN_METEO_ENDPOINT}?{query}"
 
 
-def parse_weather(payload: bytes, *, timezone: str) -> WeatherSnapshot:
+def parse_weather(payload: bytes, *, timezone: str, language: Language = "pt") -> WeatherSnapshot:
     """Validate and normalize an Open-Meteo forecast response."""
     zone = _timezone(timezone)
     data = _decode_json(payload)
@@ -140,12 +112,13 @@ def parse_weather(payload: bytes, *, timezone: str) -> WeatherSnapshot:
         timezone=timezone,
         source="Open-Meteo",
         current=WeatherPeriod(
-            summary=_weather_summary(current_code),
+            summary=_weather_summary(current_code, language),
+            code=current_code,
             temperature_c=current_temp,
             wind_kph=current_wind,
         ),
-        today=_period(arrays, 0),
-        tomorrow=_period(arrays, 1),
+        today=_period(arrays, 0, language),
+        tomorrow=_period(arrays, 1, language),
         sunrise=_optional_provider_datetime(arrays["sunrise"][0], zone, "daily.sunrise"),
         sunset=_optional_provider_datetime(arrays["sunset"][0], zone, "daily.sunset"),
         hourly=_hours(data, zone),
@@ -263,18 +236,20 @@ def _daily_percent(values: list[Any], key: str, index: int) -> int | None:
     return value
 
 
-def _weather_summary(code: int | None) -> str | None:
+def _weather_summary(code: int | None, language: Language = "pt") -> str | None:
     if code is None:
         return None
-    return _WMO_SUMMARIES.get(code, "Condições meteorológicas variadas")
+    key = f"weather.{code}"
+    return text(key if key in CATALOG["pt"] else "weather.unknown", language)
 
 
-def _period(arrays: dict[str, list[Any]], index: int) -> WeatherPeriod:
+def _period(arrays: dict[str, list[Any]], index: int, language: Language = "pt") -> WeatherPeriod:
     code = _integer({"weather_code": arrays["weather_code"][index]}, "weather_code")
     maximum = _daily_number(arrays["temperature_2m_max"], "temperature_2m_max", index)
     minimum = _daily_number(arrays["temperature_2m_min"], "temperature_2m_min", index)
     return WeatherPeriod(
-        summary=_weather_summary(code),
+        summary=_weather_summary(code, language),
+        code=code,
         temperature_c=maximum,
         temperature_min_c=minimum,
         temperature_max_c=maximum,

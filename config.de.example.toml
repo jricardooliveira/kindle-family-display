@@ -1,0 +1,24 @@
+# Nach config.toml kopieren. Keine Konten oder Schlüssel; siehe docs/setup.de.md.
+# Zum Ausprobieren ohne Internet demo_mode auf true setzen.
+language = "de"
+country = "DE"
+timezone = "Europe/Berlin"
+demo_mode = false
+ai_enabled = false
+screen_width = 800
+screen_height = 600
+screen_rotation = 0
+refresh_minutes = 30
+database_url = "sqlite:///.data/kindle.db"
+cache_dir = ".cache"
+
+# Berlin ist ein öffentlicher Beispielort. Durch den eigenen Wohnort ersetzen.
+weather_latitude = 52.5200
+weather_longitude = 13.4050
+weather_location = "Berlin"
+
+[[rss_feeds]]
+id = "tagesschau-inland"
+label = "Tagesschau"
+category = "national"
+url = "https://www.tagesschau.de/inland/index~rss2.xml"
